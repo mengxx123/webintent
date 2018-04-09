@@ -19,7 +19,7 @@ ysIntent.startActivity = function (intent, onResult, onFailure) {
     let indentOrigin = 'http://a.yunser.com'
     // let indentOrigin = 'http://localhost:8082'
     let win
-    window.addEventListener('message',function(event){
+    window.addEventListener('message',function(postMessage){
         console.log('on message')
         console.log(event)
         if (event.origin === indentOrigin) {

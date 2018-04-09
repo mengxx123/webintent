@@ -18,13 +18,24 @@ a.yunser.com
 <button id="send">完成</button>
 
 <script>
+    window.aaa = 'edit'
 function getActionName(name) {
     let arr = name.split('/')
     return arr[arr.length - 1]
 }
-let origin
+var decodeNameTransport = function (str) {
+    return JSON.parse(window.atob(str.replace(/_/g, "=")));
+};
+console.log('呵呵')
+console.log(decodeNameTransport(window.name))
+window.intent = decodeNameTransport(window.name)
+
+document.getElementById('data').value = window.intent.action.data
+
+
+let origin = 'http://webintents.yun.com'
 window.addEventListener('message',function(event) {
-    console.log('on message')
+    console.log('edit on message')
     console.log(event)
     // 通过origin属性判断消息来源地址
     origin = event.origin
@@ -43,25 +54,25 @@ window.addEventListener('message',function(event) {
     }
     document.getElementById('data').value = intent.data
 },false);
+
+let owner = window.opener || window.parent
 document.getElementById('send').addEventListener("click", function() {
-    console.log('send message')
+    console.log('editor send message')
     let data = document.getElementById('data').value
-    window.opener.postMessage(data, origin)
-    window.close()
+    window.intent.action.data = data
+    console.log('edit finish')
+	let sendObj = {
+        request: 'sendResponse',
+		intent: window.intent
+//        data: data,
+	}
+    sendObj.intent.data = data
+    owner.postMessage(JSON.stringify(sendObj), origin)
+    owner.window.close()
 }, false);
 
-window.opener.postMessage('data to send222', origin)
+console.log('child end   data to send222')
 
-// document.getElementById('edit-photo').addEventListener("click", function() {
-//   var intent = new Intent({"action":"http://webintents.org/edit",
-//                            "type":"image/jpeg",
-//                            "data": '121212'});
-//   navigator.startActivity(intent, imageEdited);
-// }, false);
-
-// function imageEdited(data) {
-//   document.getElementById('image').src = data;
-// }
 
 </script>
 </body>
