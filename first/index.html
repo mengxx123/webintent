@@ -11,17 +11,17 @@
 </head>
 <body>
 
-<div id="data">This is a text</div>
+<div id="data">This is a text这是正文</div>
 
 <button id="open">编辑文本</button>
+<button id="view">查看文本</button>
 
-<script src="webintents.js"></script>
+<script src="https://webintents.yunser.com/webintents.js"></script>
 <script>
-    window.aaa = 'home'
     document.getElementById('open').addEventListener("click", function () {
         let data = document.getElementById('data').innerText
         var intent = new Intent({
-            "action": "http://webintents.yun.com/edit",
+            "action": "http://webintent.yunser.com/edit",
             "type": "text/plain",
             "data": data
         });
@@ -29,6 +29,21 @@
         navigator.startActivity(intent, data => {
             console.log('成功了')
             document.getElementById('data').innerText = data
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('view').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/view",
+            "type": "text/plain",
+            "data": data
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, () => {
+            console.log('成功了')
         }, data => {
             console.log('获取失败')
         })

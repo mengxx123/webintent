@@ -17,61 +17,20 @@ a.yunser.com
 <textarea id="data"></textarea>
 <button id="send">完成</button>
 
+<script src="https://webintents.yunser.com/webintents-ext.js"></script>
+<!-- <script src="./webintents-ext.js"></script> -->
 <script>
-    window.aaa = 'edit'
-function getActionName(name) {
-    let arr = name.split('/')
-    return arr[arr.length - 1]
-}
-var decodeNameTransport = function (str) {
-    return JSON.parse(window.atob(str.replace(/_/g, "=")));
-};
-console.log('呵呵')
-console.log(decodeNameTransport(window.name))
-window.intent = decodeNameTransport(window.name)
+var intent = new IntentEx(data => {
+    document.getElementById('data').value = data
+}, error => {
+	console.log('不支持啊')
+})
 
-document.getElementById('data').value = window.intent.action.data
-
-
-let origin = 'http://webintents.yun.com'
-window.addEventListener('message',function(event) {
-    console.log('edit on message')
-    console.log(event)
-    // 通过origin属性判断消息来源地址
-    origin = event.origin
-    if (event.origin === 'http://a.com') {
-        console.log(event.data);
-        console.log(event.source);
-    }
-    let intent = event.data.action
-
-    console.log(event.data.action)
-    let actionName = getActionName(intent.action)
-    console.log('actionName', actionName)
-    if (intent.type !== 'text/plain') {
-        document.getElementById('tip').innerText = '不支持的类型'
-        return
-    }
-    document.getElementById('data').value = intent.data
-},false);
-
-let owner = window.opener || window.parent
 document.getElementById('send').addEventListener("click", function() {
     console.log('editor send message')
     let data = document.getElementById('data').value
-    window.intent.action.data = data
-    console.log('edit finish')
-	let sendObj = {
-        request: 'sendResponse',
-		intent: window.intent
-//        data: data,
-	}
-    sendObj.intent.data = data
-    owner.postMessage(JSON.stringify(sendObj), origin)
-    owner.window.close()
+    intent.sendResponse(data)
 }, false);
-
-console.log('child end   data to send222')
 
 
 </script>

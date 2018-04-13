@@ -49,9 +49,9 @@ var Intents = new (function () {
         return [{
             icon: 'https://www.baidu.com/favicon.ico',
             title: '这是标题',
-            url: 'http://edit.yun.com/',
+            url: 'http://b.yunser.com/',
             disposition: 'inline',
-            domain: 'http://edit.yun.com'
+            domain: 'http://b.yunser.com'
         }]
         // return allActions;
     };
@@ -163,13 +163,22 @@ var MessageDispatcher = function () {
         var actions = Intents.getActions(data.intent);
         console.log('get All action', actions)
         // TODO
-        actions = [{
-            icon: 'https://www.baidu.com/favicon.ico',
-            title: '这是标题',
-            url: 'http://edit.yun.com/',
-            disposition: 'inline',
-            domain: 'http://edit.yun.com'
-        }]
+        actions = [
+            {
+                icon: 'https://www.baidu.com/favicon.ico',
+                title: '最简单的文本编辑器',
+                url: 'https://b.yunser.com/',
+                disposition: 'inline',
+                domain: 'https://b.yunser.com'
+            },
+            {
+                icon: 'https://www.baidu.com/favicon.ico',
+                title: '文本阅读器',
+                url: 'https://reader.yunser.com',
+                disposition: 'inline',
+                domain: 'https://reader.yunser.com'
+            },
+        ]
 
         var intentData = {
             id: data.intent._id,

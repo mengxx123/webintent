@@ -3,30 +3,29 @@
 <head>
     <meta charset="utf-8">
     <title>Choose an application</title>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+    <!-- <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/> -->
     <script>
         window.aaa = 'picker'
         console.log('picker start')
     </script>
     <script src="/webintents-server.js"></script>
-    <script src="/base64.js"></script>
-    <script src="/json2.js"></script>
     <script src="/controller.js"></script>
     <script src="/picker.js"></script>
     <link rel="stylesheet" href="./picker.css">
 </head>
 <body>
 <div class="header">
-    <p>Please choose the application you wish to launch for this action.</p>
-    <div>View <a href="list.html" target="_blank">Registered Applications</a></div>
+    <p>请选择应用</p>
+    <!-- <div>View <a href="list.html" target="_blank">Registered Applications</a></div> -->
 </div>
 <ul id="actions"></ul>
 <div class="header">
-    <h2>Suggested applications</h2>
+    <!-- <h2>Suggested applications</h2> -->
     <iframe id="suggestions"></iframe>
     <div id="suggestions2"></div>
     <iframe id="inline" allowTransparency="false" style="background-color: white;">
     </iframe>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
 </div>
 </body>
 </html>

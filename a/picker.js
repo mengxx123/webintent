@@ -13,17 +13,44 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-
-var decodeNameTransport = function (str) {
-    try {
-        return JSON.parse(window.atob(str.replace(/_/g, "=")));
-    } catch (e) {
-        return '';
-    }
+var encodeNameTransport = function (data) {
+    return window.btoa(unescape(encodeURIComponent(JSON.stringify(data))))
 };
 
+var decodeNameTransport = function (str) {
+    return JSON.parse(decodeURIComponent(escape(window.atob(str))))
+};
+
+// var decodeNameTransport = function (str) {
+//     try {
+//         return JSON.parse(window.atob(str.replace(/_/g, "=")));
+//     } catch (e) {
+//         return '';
+//     }
+// };
+// let b = atob('我')
+// console.log('测试ab')
+// console.log(btoa(b))
+
 attachEventListener(window, "load", function () {
-    var intent = decodeNameTransport(window.name);
+    var intent
+    if (window.name) {
+        console.log('什么鬼')
+        intent = decodeNameTransport(window.name);
+    } else {
+        console.log('调试模式')
+        // 方便调试
+        intent = {
+            action: {
+                action: "http://webintent.yunser.com/edit",
+                type: "text/plain",
+                data: "This is a text这是正文"
+            },
+            _callback: true,
+            _error: true,
+            _id: "intent1523640974525"
+        }
+    }
     console.log('lala')
     console.log(window.name);
     console.log(window.parent.pickername)
@@ -39,11 +66,12 @@ attachEventListener(window, "load", function () {
     var dispatcher = new MessageDispatcher();
     dispatcher.startActivity(data, timestamp);
 
-    var suggestions = document.getElementById("suggestions");
-    suggestions.src = "//registry.a.yunser.com/suggestions.html?action=" + intent.action.action + "&type=" + intent.action.type;
+    // var suggestions = document.getElementById("suggestions");
+    // suggestions.src = "//registry.a.yunser.com/suggestions.html?action=" + intent.action.action + "&type=" + intent.action.type;
 
-    var suggestions2 = document.getElementById("suggestions2");
-    suggestions2.innerText = suggestions.src
+    // var suggestions2 = document.getElementById("suggestions2");
+    // suggestions2.innerText = suggestions.src
 
-    window.resizeTo(300, 300);
+    // 全屏
+    // window.resizeTo(300, 300);
 }, false);
