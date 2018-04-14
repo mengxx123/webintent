@@ -1,7 +1,3 @@
-/**
- * 参考：https://github.com/PaulKinlan/webintents
- */
-
 var app = new Vue({
     el: '#app',
     data: {
@@ -10,8 +6,12 @@ var app = new Vue({
         ]
     },
     mounted() {
+        this.actions = Intents.getAllActions()
     },
     methods: {
+        clearAll() {
+            Intents.clearAll()
+        },
         selectAction(action) {
             if (this.intent) {
                 this.launch(this.intent, action.disposition, action.url)
@@ -24,9 +24,8 @@ var app = new Vue({
             console.log('launch ==========')
             console.log(intent)
 
-
-            console.log('launch规范')
-            var intentStr = encodeNameTransport(intent)
+            // TODO 这里有bug
+            var intentStr = window.btoa(unescape(encodeURIComponent(JSON.stringify(intent)))).replace(/=/g, "_")
 
             if (intent && !!intent._callback == false) {
                 // There is no callback so remove any reference to the intent.
@@ -50,22 +49,19 @@ var app = new Vue({
     }
 })
 
-var IntentController = new (function () {
-
-    var intent
-
-    this.setIntent = function (i) {
-        intent = i
-        app.$data.intent = i
-    }
-
-    this.getIntent = function () {
-        return intent
-    }
-
-    this.renderActions = function (actions, intent, root) {
-        app.$data.actions = actions
-        app.$data.intent = intent
-    }
-})()
-
+// window.addEventListener('load', function () {
+//     var clearall = document.getElementById("clearall");
+//     attachEventListener(clearall, "click", function () {
+//         Intents.clearAll()
+//         window.location.reload();
+//     });
+//
+//     var actions = Intents.getAllActions();
+//
+//     for (var key in actions) {
+//         var action = actions[key];
+//         var root = IntentController.renderActionContainer(action, document.body);
+//
+//         IntentController.renderActions(action.actions, undefined, root);
+//     }
+// }, false)

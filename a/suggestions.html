@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+    <link rel="stylesheet" href="./common.css">
+    <title>已安装应用</title>
+    <script src="/webintents-server.js"></script>
+    <script src="/controller.js"></script>
+    <script>
+        let getUrlParam = function(name) {
+            var params = decodeURI(window.location.search);
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = params.substr(1).match(reg);
+            if (r!=null) return unescape(r[2]); return null;
+        }
+
+        window.addEventListener('load', function () {
+            let action = getUrlParam('action')
+            let type = getUrlParam('type')
+            console.log(action, type)
+//            var clearall = document.getElementById("clearall");
+//            attachEventListener(clearall, "click", function () {
+//                Intents.clearAll()
+//                window.location.reload();
+//            });
+//
+//            var actions = Intents.getAllActions();
+//
+//            for (var key in actions) {
+//                var action = actions[key];
+//                var root = IntentController.renderActionContainer(action, document.body);
+//
+//                IntentController.renderActions(action.actions, undefined, root);
+//            }
+        }, false)
+    </script>
+</head>
+<body>
+<h1>Intents</h1>
+<div>
+    <p></p>
+    <div><a id="clearall" href="#">Clear all</a></div>
+</div>
+</body>
+</html>

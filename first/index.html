@@ -11,10 +11,18 @@
 </head>
 <body>
 
-<div id="data">This is a text这是正文</div>
-
+<div id="data">This is a text这是文本</div>
+<img id="img" src="">
 <button id="open">编辑文本</button>
+<button id="open2">富文本编辑器</button>
 <button id="view">查看文本</button>
+<br>
+<button id="pickerImg">选择图片</button>
+<button id="viewImg">查看图片</button>
+<button id="viewImgs">查看多张图片</button>
+<br>
+<button id="pickerVideo">选择视频</button>
+<button id="pickerVideo">保存文件</button>
 
 <script src="https://webintents.yunser.com/webintents.js"></script>
 <script>
@@ -29,6 +37,93 @@
         navigator.startActivity(intent, data => {
             console.log('成功了')
             document.getElementById('data').innerText = data
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('open').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/edit",
+            "type": "text/plain",
+            "data": data
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            console.log('成功了')
+            document.getElementById('data').innerText = data
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('pickerImg').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/picker",
+            "type": "image/*",
+            data: ''
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            console.log('成功了')
+            document.getElementById('img').src = data
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('viewImg').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/view",
+            "type": "image/*",
+            data: 'https://www.baidu.com/img/bd_logo1.png?where=super'
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            console.log('成功了')
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('viewImgs').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/view",
+            "type": "image/*",
+            data: [
+                {
+                    url: 'https://www.baidu.com/img/bd_logo1.png?where=super',
+                    title: '百度Logo'
+                },
+                {
+                    url: 'https://tool.yunser.com/static/img/logo_64.png',
+                    title: '云设ICON'
+                }
+            ]
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            console.log('成功了')
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('pickerVideo').addEventListener("click", function () {
+        let data = document.getElementById('data').innerText
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/picker",
+            "type": "video/*",
+            data: ''
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            console.log('成功了')
+            document.getElementById('img').src = data
         }, data => {
             console.log('获取失败')
         })

@@ -16,12 +16,8 @@
 
 
 var id;
-var callbacks = {
-    asd: 'asd' + new Date().getTime()
-};
+var callbacks = {};
 var errorCallbacks = {};
-
-let ownerWindow = window.parent
 
 window.attachEventListener = function (obj, type, func, capture) {
     if (!!obj.addEventListener) {
@@ -32,34 +28,26 @@ window.attachEventListener = function (obj, type, func, capture) {
     }
 };
 
-// Intent manager
+
 var Intents = new (function () {
 
     this.getAllActions = function () {
         var allActions = [];
-        // for (var key in localStorage) {
-        //     var actions = JSON.parse(localStorage[key]);
-        //
-        //     if (!!actions.actions && actions.actions instanceof Array) {
-        //         allActions.push({key: key, actions: actions.actions});
-        //     }
-        // }
+        for (var key in localStorage) {
+            var actions = JSON.parse(localStorage[key]);
 
-        // TODO 从本地存储读取
-        return ACTIONS
+            if (!!actions.actions && actions.actions instanceof Array) {
+                allActions.push({key: key, actions: actions.actions});
+            }
+        }
+
+        return allActions;
     };
 
     this.getActions = function (intent) {
-        if (!intent) {
-            throw "No intent";
-        }
-        if (!intent.action) {
-            throw "No action to resolve";
-        }
-        // hack
-        intent.type = intent.action.type
+        if (!!intent == false) throw "No intent";
+        if (!!intent.action == false) throw "No action to resolve";
 
-        console.log('获取 getActions',intent )
         var actionData = localStorage[intent.action] || "{}";
         var actions = JSON.parse(actionData);
 
@@ -70,9 +58,6 @@ var Intents = new (function () {
             actions = {"actions": []};
         }
 
-        actions = {
-            actions: this.getAllActions()
-        }
         var action;
         var filteredActions = {"actions": []};
         // Find the actions that are of the correct type.
@@ -87,16 +72,13 @@ var Intents = new (function () {
 
             var matchType = actiontype.substr(0, actionEnd + 1);
             var intentType = intent.type.substr(0, intentEnd);
-            console.log('匹配' + matchType, intentType)
-            if (intentType.indexOf(matchType) === 0 ||
-                matchType.indexOf(intentType) === 0 ||
-                action.type === "*" ||
-                intent.type === "*" ||
-                !intent.type) {
+
+            if (intentType.indexOf(matchType) == 0 ||
+                matchType.indexOf(intentType) == 0 ||
+                action.type == "*" ||
+                intent.type == "*" ||
+                !!intent.type == false) {
                 filteredActions.actions.push(action);
-                console.log('成功')
-            } else {
-                console.log('不成功')
             }
         }
 
@@ -167,8 +149,7 @@ var MessageDispatcher = function () {
 
     this.startActivity = function (data, timestamp, e) {
         var actions = Intents.getActions(data.intent);
-        console.log('get All action', actions)
-        // TODO
+
         var intentData = {
             id: data.intent._id,
             intent: data.intent,
@@ -181,10 +162,7 @@ var MessageDispatcher = function () {
     };
 
     this.registerCallback = function (data, timestamp, e) {
-        console.log('registerCallback********' + data.id)
         callbacks[data.id] = {};
-
-        console.log('callbacks after add', callbacks)
 
         if (!!window.onstorage == false) {
             // We are going to have to set up something that polls.
@@ -193,7 +171,6 @@ var MessageDispatcher = function () {
                 if (!!intentStr) {
                     var intentObj = JSON.parse(intentStr);
                     if (intentObj.request == "sendResponse") {
-                        console.log('send message 1', intentStr)
                         window.postMessage(intentStr, "*");
                         clearInterval(timer);
                     }
@@ -212,7 +189,6 @@ var MessageDispatcher = function () {
                 if (!!intentStr) {
                     var intentObj = JSON.parse(intentStr);
                     if (intentObj.request == "sendErrorResponse") {
-                        console.log('send message 2', intentStr)
                         window.postMessage(intentStr, "*");
                         clearInterval(timer);
                     }
@@ -222,13 +198,12 @@ var MessageDispatcher = function () {
     };
 
     this.requestData = function (data, timestamp, e) {
-        if (e.origin == "http://registry.a.yunser.com") {
+        if (e.origin == "http://registry.webintents.org") {
             var intentObj = IntentController.getIntent();
             var response = {
                 request: "dataResponse",
                 data: intentObj
             };
-            console.log('send message 3', JSON.stringify(response), e.origin)
             e.source.postMessage(JSON.stringify(response), e.origin);
         }
     };
@@ -263,33 +238,15 @@ var MessageDispatcher = function () {
      * The correct frame has recieved the response, route it back to the parent app.
      */
     this.sendResponse = function (data, timestamp, e) {
-        console.log('sendResponse callback haha', data)
-        console.log('callbacks', callbacks)
-        // TODO
-        // if (!!callbacks[data.intent._id] == false) {
-        //     return;
-        // }
-        console.log('2222222222222222222222223333333333333333')
+        if (!!callbacks[data.intent._id] == false) {
+            return;
+        }
         localStorage.removeItem(data.intent._id);
         var message = JSON.stringify({intent: data.intent, request: "response"});
-        console.log('send message 4', message)
-        console.log(window.aaa)
-        console.log(window.opener)
-        if (window.opener) {
-            window.opener.postMessage(
-                message,
-                "*"
-            );
-        } else {
-            console.log('opener 不存在')
-            console.log(window.parent)
-            window.parent.postMessage(
-                message,
-                "*"
-            );
-        }
-
-
+        window.parent.postMessage(
+            message,
+            "*"
+        );
     };
 
     /*
@@ -301,7 +258,6 @@ var MessageDispatcher = function () {
         }
         localStorage.removeItem(data.intent._id);
         var message = JSON.stringify({intent: data.intent, request: "errorResponse"});
-        console.log('send message 5', message)
         window.parent.postMessage(
             message,
             "*"
@@ -310,7 +266,6 @@ var MessageDispatcher = function () {
 };
 
 var MessageHandler = function () {
-
     var dispatcher = new MessageDispatcher();
     this.handler = function (e) {
         var data;
@@ -325,21 +280,17 @@ var MessageHandler = function () {
                 return;
             }
         }
-        console.log('MessageHandler')
-        console.log(data)
+
         if (data.origin && data.origin !== window.name ||
             data.process && data.process == false) {
-            console.log('no dispatcher')
             // If there is an intended origin, then enforce it, or the system says not to listen to the event.
             return;
         }
-        console.log('dispatcher ' + data.request + '?', dispatcher)
+
         var timestamp = (new Date()).valueOf();
 
-        if (dispatcher[data.request]) {
-            console.log('dispatch', data)
+        if (dispatcher[data.request])
             dispatcher[data.request](data, timestamp, e);
-        }
     };
 }
 
@@ -352,6 +303,5 @@ attachEventListener(document, "storage", msgHandler.handler, false);
 attachEventListener(window, "load", function () {
     // Tell the app we are loaded.
     var message = JSON.stringify({request: "ready"});
-    console.log('send ready message, Tell the app we are loaded', message)
     window.parent.postMessage(message, "*");
 }, false); 

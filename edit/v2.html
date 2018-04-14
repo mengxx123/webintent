@@ -14,29 +14,22 @@
 
 a.yunser.com
 <div id="tip"></div>
+<h1>高级版编辑器</h1>
 <textarea id="data"></textarea>
 <button id="send">完成</button>
 
 <script src="https://webintents.yunser.com/webintents.js"></script>
 <script>
-window.addEventListener('load', () => {
-    if (!window.intent) {
-        return
-	}
-	document.getElementById('data').value = window.intent.data
-
-	document.getElementById('send').addEventListener("click", function() {
-		console.log('editor send message')
-		let data = document.getElementById('data').value
-		window.intent.postResult(data)
-		setTimeout(() => {
-			let owner = window.opener || window.parent
-			owner.window.close()
-		}, 500)
-	}, false)
+document.getElementById('data').value = window.intent.data
+document.getElementById('send').addEventListener("click", function() {
+    console.log('editor send message')
+    let data = document.getElementById('data').value
+    window.intent.postResult(data)
+	setTimeout(() => {
+		let owner = window.opener || window.parent
+		owner.window.close()
+	}, 500)
 }, false)
-
-
 
 //var intent = new IntentEx(data => {
 //    document.getElementById('data').value = data

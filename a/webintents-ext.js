@@ -1,6 +1,3 @@
-// var decodeNameTransport = function (str) {
-//     return JSON.parse(window.atob(str.replace(/_/g, "=")));
-// };
 var encodeNameTransport = function (data) {
     return window.btoa(unescape(encodeURIComponent(JSON.stringify(data))))
 };
@@ -28,6 +25,7 @@ class IntentEx {
         }
         
         console.log('呵呵')
+        console.log(window.name)
         console.log(decodeNameTransport(window.name))
         this.intent = decodeNameTransport(window.name)
 

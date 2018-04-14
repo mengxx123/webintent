@@ -1,59 +1,32 @@
 <!doctype html>
-<html manifest="cache.manifest">
+<html>
 <head>
-    <title>Installed Applications</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
-    <style>
-        li {
-            clear: both;
-        }
-
-        li img {
-            width: 32px;
-            height: 32px;
-        }
-
-        li span {
-            display: block;
-            color: #888;
-            font-style: italic;
-        }
-    </style>
-    <script src="/webintents-server.js"></script>
-    <script src="/controller.js"></script>
-    <script>
-        window.attachEventListener = function (obj, type, func, capture) {
-            if (!!obj.addEventListener) {
-                obj.addEventListener(type, func, capture);
-            }
-            else if (!!obj.attachEvent) {
-                obj.attachEvent("on" + type, func);
-            }
-        };
-
-        attachEventListener(window, "load", function () {
-            var clearall = document.getElementById("clearall");
-            attachEventListener(clearall, "click", function () {
-                Intents.clearAll()
-                window.location.reload();
-            });
-
-            var actions = Intents.getAllActions();
-
-            for (var key in actions) {
-                var action = actions[key];
-                var root = IntentController.renderActionContainer(action, document.body);
-
-                IntentController.renderActions(action.actions, undefined, root);
-            }
-        }, false);
-    </script>
+    <link rel="stylesheet" href="./common.css">
+    <title>已安装应用</title>
 </head>
 <body>
-<h1>Intents</h1>
-<div>
-    <p></p>
-    <div><a id="clearall" href="#">Clear all</a></div>
+<div id="app">
+    <div class="wrap-box">
+        <h2 class="page-title">已安装应用</h2>
+        <div class="empty" v-if="!actions.length">暂无已安装应用</div>
+        <ul class="action-list">
+            <li class="item" v-for="action in actions" @click="selectAction(action)">
+                <img class="icon" :src="action.icon">
+                <a class="title" :href="action.url" target="_blank" @click.prevent="openUri(action.domain)">{{ action.title }}</a>
+                <br>
+                <span class="domain">{{ action.domain || 'Unknown domain' }}</span>
+            </li>
+        </ul>
+        <a class="more" href="#" @click.prevent="clearAll" v-if="actions.length">清除所有</a>
+    </div>
 </div>
+
+<script src="/actions.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+<script src="/storage.js"></script>
+<script src="/webintents-server.js"></script>
+<script src="/list.js"></script>
 </body>
 </html>
