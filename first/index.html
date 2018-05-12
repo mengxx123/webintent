@@ -7,6 +7,10 @@
         canvas {
             border: 1px solid #eee;
         }
+        img {
+            max-width: 100px;
+            max-height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -25,17 +29,18 @@
 <br>
 <button id="pickerVideo">选择视频</button>
 <button id="saveText">保存文本</button>
+<button id="pickText">选择文本</button>
 <button id="saveImg">保存图片</button>
 
 <script src="https://webintents.yunser.com/webintents.js"></script>
 <script>
     document.getElementById('open').addEventListener("click", function () {
         let data = document.getElementById('data').innerText
-        var intent = new Intent({
-            "action": "http://webintent.yunser.com/edit",
-            "type": "text/plain",
-            "data": data
-        });
+        let intent = new Intent({
+            action: 'http://webintent.yunser.com/edit',
+            type: 'text/plain',
+            data: data
+        })
         console.log('首页 intent', intent)
         navigator.startActivity(intent, data => {
             console.log('成功了')
@@ -45,21 +50,7 @@
         })
     }, false)
 
-    document.getElementById('open').addEventListener("click", function () {
-        let data = document.getElementById('data').innerText
-        var intent = new Intent({
-            "action": "http://webintent.yunser.com/edit",
-            "type": "text/plain",
-            "data": data
-        });
-        console.log('首页 intent', intent)
-        navigator.startActivity(intent, data => {
-            console.log('成功了')
-            document.getElementById('data').innerText = data
-        }, data => {
-            console.log('获取失败')
-        })
-    }, false)
+   
 
     document.getElementById('editImg').addEventListener("click", function () {
         let data = document.getElementById('img').src
@@ -80,7 +71,7 @@
     document.getElementById('pickerImg').addEventListener("click", function () {
         let data = document.getElementById('data').innerText
         var intent = new Intent({
-            "action": "http://webintent.yunser.com/picker",
+            "action": "http://webintent.yunser.com/pick",
             "type": "image/*",
             data: ''
         });
@@ -135,7 +126,7 @@
     document.getElementById('pickerVideo').addEventListener("click", function () {
         let data = document.getElementById('data').innerText
         var intent = new Intent({
-            "action": "http://webintent.yunser.com/picker",
+            "action": "http://webintent.yunser.com/pick",
             "type": "video/*",
             data: ''
         });
@@ -169,7 +160,11 @@
         var intent = new Intent({
             "action": "http://webintent.yunser.com/save",
             "type": "image/*",
-            "data": data
+            "data": data,
+            extras: {
+                extension: 'png',
+                fileName: 'test.png'
+            }
         });
         console.log('首页 intent', intent)
         navigator.startActivity(intent, () => {
@@ -185,10 +180,28 @@
         var intent = new Intent({
             "action": "http://webintent.yunser.com/save",
             "type": "text/*",
-            "data": data
+            "data": data,
+            extras: {
+                extension: 'txt',
+                fileName: 'test.txt'
+            }
         });
         console.log('首页 intent', intent)
         navigator.startActivity(intent, () => {
+            console.log('成功了')
+        }, data => {
+            console.log('获取失败')
+        })
+    }, false)
+
+    document.getElementById('pickText').addEventListener("click", function () {
+        var intent = new Intent({
+            "action": "http://webintent.yunser.com/pick",
+            "type": "text/*"
+        });
+        console.log('首页 intent', intent)
+        navigator.startActivity(intent, data => {
+            document.getElementById('data').innerText = data
             console.log('成功了')
         }, data => {
             console.log('获取失败')

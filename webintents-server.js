@@ -35,18 +35,30 @@ window.attachEventListener = function (obj, type, func, capture) {
 // Intent manager
 var Intents = new (function () {
 
-    this.getAllActions = function () {
-        var allActions = [];
+    this.getAllActions = function (it) {
+        var allActions = ACTIONS;
+        if (it.action.action) {
+            let arr = it.action.action.split('/')
+            let type = arr[arr.length - 1]
+            let arr2 = []
+           
+            allActions = allActions.filter(function (a) {
+                console.log('变量', a)
+                return a._type === type || type === '?'
+            })
+            console.log(type, allActions)
+        }
+            
         // for (var key in localStorage) {
         //     var actions = JSON.parse(localStorage[key]);
-        //
+        
         //     if (!!actions.actions && actions.actions instanceof Array) {
         //         allActions.push({key: key, actions: actions.actions});
         //     }
         // }
 
         // TODO 从本地存储读取
-        return ACTIONS
+        return allActions
     };
 
     this.getActions = function (intent) {
@@ -71,7 +83,7 @@ var Intents = new (function () {
         }
 
         actions = {
-            actions: this.getAllActions()
+            actions: this.getAllActions(intent)
         }
         var action;
         var filteredActions = {"actions": []};
