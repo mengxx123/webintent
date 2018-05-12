@@ -326,7 +326,8 @@ var MessageHandler = function () {
     var dispatcher = new MessageDispatcher();
     this.handler = function (e) {
         var data;
-        if (!!e.data) {
+        if (e.data) {
+            console.log('转换', e.data)
             data = JSON.parse(e.data);
         }
         else {

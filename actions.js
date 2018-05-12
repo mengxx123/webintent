@@ -82,6 +82,15 @@ let ACTIONS = [
     },
     {
         _type: 'pick',
+        title: '获取二维码图片',
+        description: '',
+        type: 'image/*',
+        icon: 'https://www.baidu.com/favicon.ico',
+        url: 'https://qrcode.yunser.com/',
+        domain: 'https://qrcode.yunser.com'
+    },
+    {
+        _type: 'pick',
         title: '本地上传文件',
         description: '',
         type: 'text/*',
