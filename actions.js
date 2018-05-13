@@ -207,6 +207,14 @@ let ACTIONS = [
         domain: 'https://code.yunser.com'
     },
     {
+        _type: 'edit',
+        type: 'text/plain',
+        icon: 'https://www.baidu.com/favicon.ico',
+        title: 'JSON 编辑器',
+        url: 'https://json.yunser.com/',
+        domain: 'https://json.yunser.com'
+    },
+    {
         _type: 'view',
         type: 'text/*',
         icon: 'https://www.baidu.com/favicon.ico',
