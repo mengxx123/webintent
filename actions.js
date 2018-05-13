@@ -32,7 +32,16 @@ let ACTIONS = [
         description: '',
         type: 'text/*',
         icon: 'https://www.baidu.com/favicon.ico',
-        url: 'https://file.yunser.com/',
+        url: 'https://file.yunser.com/save',
+        domain: 'https://file.yunser.com'
+    },
+    {
+        _type: '?',
+        title: '保存到我的云盘',
+        description: '',
+        type: 'text/*',
+        icon: 'https://www.baidu.com/favicon.ico',
+        url: 'https://file.yunser.com/save',
         domain: 'https://file.yunser.com'
     },
     {
@@ -50,7 +59,7 @@ let ACTIONS = [
         description: '',
         type: 'image/*',
         icon: 'https://www.baidu.com/favicon.ico',
-        url: 'https://file.yunser.com/',
+        url: 'https://file.yunser.com/save',
         domain: 'https://file.yunser.com'
     },
     {
@@ -68,7 +77,7 @@ let ACTIONS = [
         description: '',
         type: 'text/*',
         icon: 'https://www.baidu.com/favicon.ico',
-        url: 'https://file.yunser.com/',
+        url: 'https://file.yunser.com/pick',
         domain: 'https://file.yunser.com'
     },
     {
@@ -77,7 +86,7 @@ let ACTIONS = [
         description: '',
         type: 'image/*',
         icon: 'https://www.baidu.com/favicon.ico',
-        url: 'https://image.yunser.com/',
+        url: 'https://image.yunser.com/pick',
         domain: 'https://file.yunser.com'
     },
     {
