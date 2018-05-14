@@ -86,7 +86,7 @@ let ACTIONS = [
         description: '',
         type: 'image/*',
         icon: 'https://www.baidu.com/favicon.ico',
-        url: 'https://image.yunser.com/pick',
+        url: 'https://file.yunser.com/pick',
         domain: 'https://file.yunser.com'
     },
     {
